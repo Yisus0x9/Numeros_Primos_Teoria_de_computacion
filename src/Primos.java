@@ -1,46 +1,46 @@
 
-
 import java.util.ArrayList;
-import java.util.HashMap;
+
 
 public class Primos {
 
     ArrayList <Integer>nUnos;
-    ArchivoServicio flujo;
+    ArchivoServicio flujo,flujo2;
 
     public Primos(String nombreAr) {
         this.nUnos =new ArrayList<>();
         flujo=new ArchivoServicio(nombreAr);
         flujo.ArchivoBufferedW("Σ={ε");
+        flujo2=new ArchivoServicio("Decimal.txt").ArchivoBufferedW("Σ={ε");
     }
 
     private boolean isPrimo(int i){
-        int divisor=0;
-        for (int j=1;j<=i/2;j++){
+        int limit=i/2;
+        if(i==2){return true;}
+        if(i%2==0){return  false;}
+        for (int j=2;j<=limit;j++){
             if(i%j==0) {
-                divisor += 2;
-            }
-            if(divisor>2) {
-                break;
+                return false;
+            }else{
+                limit=i/j+2;
             }
         }
-        if (divisor==2) {
-            //System.out.println(i);
-            return true;
-        }
-        return false;
+        return true;
     }
 
     public void conjuntoP(int max){
         String cad;
-        for (int i = 1; i <= max; i++) {
+        for (int i = 2; i <= max; i++) {
             if(isPrimo(i)) {
+                flujo2.ArchivoBufferedW(",").ArchivoBufferedW(Integer.toString(i));
                 cad=toBinary(i);
+                numeroUnos(cad);
                 flujo.ArchivoBufferedW(",").ArchivoBufferedW(cad);
-               // numeroUnos(cad);
             }
-            if(i%40==0)
+
+            if((i%10==0))
                 flujo.ArchivoBufferedW("\n");
+
         }
         flujo.ArchivoBufferedW("}");
     }
@@ -56,7 +56,6 @@ public class Primos {
             }else{
                 binario.append(1);
                 i=i/2;
-
             }
         }
         return binario.reverse().toString();
